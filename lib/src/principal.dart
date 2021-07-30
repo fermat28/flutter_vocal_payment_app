@@ -23,6 +23,7 @@ class PrincipalPage extends StatefulWidget {
   @override
   _PrincipalPageState createState() => _PrincipalPageState();
 }
+
 class Command {
   static final all = [
     email,
@@ -49,7 +50,7 @@ class Command {
 }
 
 class _PrincipalPageState extends State<PrincipalPage> {
-  String text = 'Press the button and start speaking';
+  String text = 'for vocal mode Press the button and start speaking';
   bool isListening = false;
   static List<Contact> contacts = [];
   Map<String, Color> contactsColorMap = new Map();
@@ -109,7 +110,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
         }
       }
     }
-      return yo;
+    return yo;
   }
 
   static void scanText(String rawText) {
