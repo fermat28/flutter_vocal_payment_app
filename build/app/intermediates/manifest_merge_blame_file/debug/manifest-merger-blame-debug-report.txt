@@ -1,0 +1,107 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="thealphamerc.flutter_login_signup"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="28" />
+10    <!--
+11         Flutter needs it to communicate with the running application
+12         to allow setting breakpoints, to provide hot reload, etc.
+13    -->
+14    <uses-permission android:name="android.permission.INTERNET" />
+14-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:30:6-67
+14-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:30:23-65
+15    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+15-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:31:5-70
+15-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:31:22-68
+16    <uses-permission android:name="android.permission.READ_CONTACTS" />
+16-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:32:5-72
+16-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:32:22-69
+17    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+17-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:33:1-69
+17-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:33:18-66
+18    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+18-->[:local_auth] C:\enregistrement (9)\build\local_auth\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-74
+18-->[:local_auth] C:\enregistrement (9)\build\local_auth\intermediates\library_manifest\debug\AndroidManifest.xml:9:22-71
+19    <uses-permission android:name="android.permission.CALL_PHONE" />
+19-->[:flutter_phone_direct_caller] C:\enregistrement (9)\build\flutter_phone_direct_caller\intermediates\library_manifest\debug\AndroidManifest.xml:9:5-69
+19-->[:flutter_phone_direct_caller] C:\enregistrement (9)\build\flutter_phone_direct_caller\intermediates\library_manifest\debug\AndroidManifest.xml:9:22-66
+20
+21    <uses-feature
+21-->[:flutter_phone_direct_caller] C:\enregistrement (9)\build\flutter_phone_direct_caller\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-13:36
+22        android:name="android.hardware.telephony"
+22-->[:flutter_phone_direct_caller] C:\enregistrement (9)\build\flutter_phone_direct_caller\intermediates\library_manifest\debug\AndroidManifest.xml:12:9-50
+23        android:required="false" />
+23-->[:flutter_phone_direct_caller] C:\enregistrement (9)\build\flutter_phone_direct_caller\intermediates\library_manifest\debug\AndroidManifest.xml:13:9-33
+24
+25    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+25-->[androidx.biometric:biometric:1.1.0] C:\Users\Fermat 2.0\.gradle\caches\transforms-2\files-2.1\b81862637c26b5c64a5f7bc3e92c57ba\biometric-1.1.0\AndroidManifest.xml:24:5-72
+25-->[androidx.biometric:biometric:1.1.0] C:\Users\Fermat 2.0\.gradle\caches\transforms-2\files-2.1\b81862637c26b5c64a5f7bc3e92c57ba\biometric-1.1.0\AndroidManifest.xml:24:22-69
+26    <!--
+27 io.flutter.app.FlutterApplication is an android.app.Application that
+28         calls FlutterMain.startInitialization(this); in its onCreate method.
+29         In most cases you can leave this as-is, but you if you want to provide
+30         additional functionality it is fine to subclass or reimplement
+31         FlutterApplication and put your custom class here.
+32    -->
+33    <application
+33-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:8:5-29:19
+34        android:name="io.flutter.app.FlutterApplication"
+34-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:9:9-57
+35        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+35-->[androidx.core:core:1.3.2] C:\Users\Fermat 2.0\.gradle\caches\transforms-2\files-2.1\c731eecf167fec1880873e7b49709198\core-1.3.2\AndroidManifest.xml:24:18-86
+36        android:debuggable="true"
+37        android:icon="@mipmap/ic_launcher"
+37-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:11:9-43
+38        android:label="flutter_login_signup" >
+38-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:10:9-45
+39        <activity
+39-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:12:9-23:20
+40            android:name="thealphamerc.flutter_login_signup.MainActivity"
+40-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:13:13-41
+41            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+41-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:16:13-163
+42            android:hardwareAccelerated="true"
+42-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:17:13-47
+43            android:launchMode="singleTop"
+43-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:14:13-43
+44            android:theme="@style/LaunchTheme"
+44-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:15:13-47
+45            android:windowSoftInputMode="adjustResize" >
+45-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:18:13-55
+46            <intent-filter>
+46-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:19:13-22:29
+47                <action android:name="android.intent.action.MAIN" />
+47-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:20:17-68
+47-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:20:25-66
+48
+49                <category android:name="android.intent.category.LAUNCHER" />
+49-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:21:17-76
+49-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:21:27-74
+50            </intent-filter>
+51        </activity>
+52        <!--
+53             Don't delete the meta-data below.
+54             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+55        -->
+56        <meta-data
+56-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:26:9-28:33
+57            android:name="flutterEmbedding"
+57-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:27:13-44
+58            android:value="2" />
+58-->C:\enregistrement (9)\android\app\src\main\AndroidManifest.xml:28:13-30
+59
+60        <activity
+60-->[:url_launcher] C:\enregistrement (9)\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-11:74
+61            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+61-->[:url_launcher] C:\enregistrement (9)\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-74
+62            android:exported="false"
+62-->[:url_launcher] C:\enregistrement (9)\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:10:13-37
+63            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+63-->[:url_launcher] C:\enregistrement (9)\build\url_launcher\intermediates\library_manifest\debug\AndroidManifest.xml:11:13-71
+64    </application>
+65
+66</manifest>
