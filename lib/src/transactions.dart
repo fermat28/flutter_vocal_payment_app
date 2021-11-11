@@ -3,9 +3,7 @@ import 'package:flutter_login_signup/src/Widget/TransitonPage.dart';
 import 'package:flutter_login_signup/src/Widget/senCredit.dart';
 import 'package:flutter_login_signup/src/Widget/sendMoney.dart';
 import 'package:flutter_login_signup/src/Widget/transitionOne.dart';
-import 'package:flutter_login_signup/src/Widget/transitionTwo.dart';
 import 'package:flutter_login_signup/src/achatCredit.dart';
-import 'package:flutter_login_signup/src/models/codes.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
@@ -52,14 +50,16 @@ class _TransactionPageState extends State<TransactionPage> {
                   TextField(
                     decoration: InputDecoration(labelText: 'Montant'),
                     controller: _textcontroller1,
+                    keyboardType: TextInputType.phone,
                     onSubmitted: (_) => submitData(),
                     // onChanged: (val) {
                     //   titleInput = val;
                     // },
                   ),
                   FlatButton(
+                    color: Colors.orange,
                     child: Text('Valider'),
-                    textColor: Colors.purple,
+                    textColor: Colors.white,
                     onPressed: submitData,
                   ),
                 ],
@@ -79,7 +79,7 @@ class _TransactionPageState extends State<TransactionPage> {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.input),
-              iconSize: 80,
+              iconSize: MediaQuery.of(context).size.width * 0.1,
               color: Colors.white,
               onPressed: () => _startAddNewTransaction(
                   context), /*async {
@@ -90,10 +90,10 @@ class _TransactionPageState extends State<TransactionPage> {
 
             //Icon(Icons.security, size: 80, color: Colors.white),
             SizedBox(
-              height: 15,
+              height: MediaQuery.of(context).size.height * 0.01,
             ),
             Text(
-              'Mon achat credit',
+              'A.credit',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
@@ -110,7 +110,7 @@ class _TransactionPageState extends State<TransactionPage> {
           children: <Widget>[
             IconButton(
                 icon: Icon(Icons.mobile_friendly),
-                iconSize: 80,
+                iconSize: MediaQuery.of(context).size.width * 0.1,
                 color: Colors.white,
                 onPressed:
                     /*() async {
@@ -133,10 +133,10 @@ class _TransactionPageState extends State<TransactionPage> {
 
             //Icon(Icons.security, size: 80, color: Colors.white),
             SizedBox(
-              height: 15,
+              height: MediaQuery.of(context).size.height * 0.01,
             ),
             Text(
-              'transférer du crédit',
+              'T.crédit',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
@@ -153,7 +153,7 @@ class _TransactionPageState extends State<TransactionPage> {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.monetization_on),
-              iconSize: 80,
+              iconSize: MediaQuery.of(context).size.width * 0.1,
               color: Colors.white,
               onPressed: () {
                 _sendDataToSecondScreenthtee(context);
@@ -167,10 +167,10 @@ class _TransactionPageState extends State<TransactionPage> {
 
             //Icon(Icons.fingerprint, size: 80, color: Colors.white),
             SizedBox(
-              height: 15,
+              height: MediaQuery.of(context).size.height * 0.010,
             ),
             Text(
-              "Envoyer de l'argent",
+              "Envoi d'argent",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
@@ -187,7 +187,7 @@ class _TransactionPageState extends State<TransactionPage> {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.cloud_circle),
-              iconSize: 80,
+              iconSize: MediaQuery.of(context).size.width * 0.1,
               color: Colors.white,
               onPressed: () {
                 _sendDataToSecondScreen(context);
@@ -196,7 +196,7 @@ class _TransactionPageState extends State<TransactionPage> {
 
             //Icon(Icons.security, size: 80, color: Colors.white),
             SizedBox(
-              height: 15,
+              height: MediaQuery.of(context).size.height * 0.01,
             ),
             Text(
               'acheter des data',
@@ -216,7 +216,7 @@ class _TransactionPageState extends State<TransactionPage> {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.share),
-              iconSize: 80,
+              iconSize: MediaQuery.of(context).size.width * 0.1,
               color: Colors.white,
               onPressed: () {
                 _sendDataToSecondScreentwo(context);
@@ -225,7 +225,7 @@ class _TransactionPageState extends State<TransactionPage> {
 
             //Icon(Icons.security, size: 80, color: Colors.white),
             SizedBox(
-              height: 15,
+              height: MediaQuery.of(context).size.height * 0.01,
             ),
             Text(
               'envoyer des data',
@@ -277,11 +277,11 @@ class _TransactionPageState extends State<TransactionPage> {
         children: <Widget>[
           _achatcredit(),
           SizedBox(
-            width: 80,
+            width: MediaQuery.of(context).size.width * 0.1,
           ),
           _transfertArgent(),
           SizedBox(
-            width: 80,
+            width: MediaQuery.of(context).size.width * 0.1,
           ),
           _transfertcredit(),
         ],
@@ -299,12 +299,10 @@ class _TransactionPageState extends State<TransactionPage> {
         children: <Widget>[
           _achatInternet(context),
           SizedBox(
-            width: 80,
+            width: MediaQuery.of(context).size.width * 0.1,
           ),
           _envoieInternet(),
-          SizedBox(
-            width: 80,
-          ),
+
           // _beepMe(),
         ],
       ),
@@ -354,7 +352,7 @@ class _TransactionPageState extends State<TransactionPage> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xff070338), Color(0xff494299)],
+              colors: [Color(0xff070338), Color(0xff010001)],
             ),
           ),
           child: SingleChildScrollView(
@@ -363,15 +361,15 @@ class _TransactionPageState extends State<TransactionPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                    height: 100.0,
+                    height: MediaQuery.of(context).size.height * 0.15,
                   ),
                   _title(),
                   SizedBox(
-                    height: 70.0,
+                    height: MediaQuery.of(context).size.height * 0.05,
                   ),
                   _lebous(),
                   SizedBox(
-                    height: 20.0,
+                    height: (MediaQuery.of(context).size.height) * 0.00,
                   ),
                   _lebouse(),
                 ]),

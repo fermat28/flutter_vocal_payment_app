@@ -33,12 +33,27 @@ class _MyHomeState extends State<MyHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor : Colors.orange,
         title: Center(
-          child: Text('Send Datas'),
+          child: Text('Envoi de  Datas'),
         ),
       ),
       body: Container(
-        color: Colors.amber,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+                color: Colors.grey.shade200,
+                offset: Offset(2, 4),
+                blurRadius: 5,
+                spreadRadius: 2)
+          ],
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xff070338), Color(0xff010001)],
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -57,10 +72,13 @@ class _MyHomeState extends State<MyHome> {
                 decoration: new InputDecoration(
                   hintText: "Entrez le numero s'il n'est pas dans vos contacts",
                   border: InputBorder.none,
+                  fillColor: Colors.white,
+                  filled: true,
                 ),
               ),
             ),
-            ElevatedButton(
+            RaisedButton(
+              color: Colors.orange,
               onPressed: () {
                 _awaitReturnValueFromSecondScreen(context);
               },
@@ -69,7 +87,8 @@ class _MyHomeState extends State<MyHome> {
             SizedBox(
               height: MediaQuery.of(context).size.width * 0.03,
             ),
-            ElevatedButton(
+            RaisedButton(
+              color: Colors.orange,
               onPressed:
                   /*_textcontroller2.text.isEmpty
                   ? () {
@@ -114,10 +133,17 @@ class _MyHomeState extends State<MyHome> {
   }
 
   void _sendDataToSecondScreentwo(BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Transactiontwo(widget.mdp, text),
-        ));
+    (_textcontroller2.text == null)
+        ? Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Transactiontwo(widget.mdp, text),
+            ))
+        : Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  Transactiontwo(widget.mdp, _textcontroller2.text),
+            ));
   }
 }

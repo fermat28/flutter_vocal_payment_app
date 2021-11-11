@@ -1,6 +1,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_signup/src/Widget/VocalSignupPage.dart';
+import 'package:flutter_login_signup/src/Widget/transferVocal.dart';
 import 'package:flutter_login_signup/src/transactions.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +9,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
 import './api/speech_api.dart';
 import './widget/substring_highlighted.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:string_similarity/string_similarity.dart';
 
 class PrincipalPage extends StatefulWidget {
@@ -26,35 +26,20 @@ class PrincipalPage extends StatefulWidget {
 
 class Command {
   static final all = [
-    email,
-    browser1,
-    browser2,
     achat,
     numero,
     envoiargent,
-    envoicredit,
-    achadata,
-    envoidata,
-    beepme
   ];
-  static const email = 'fais un email';
-  static const browser1 = 'open';
-  static const browser2 = 'go to';
   static const achat = 'achat de';
-  static const numero = 'à';
   static const envoiargent = 'envoie';
-  static const envoicredit = 'envoi de';
-  static const achadata = 'achat de';
-  static const envoidata = 'envoi de';
-  static const beepme = 'bip mi à';
+  static const numero = 'à';
+  static const transfert = 'transfert de';
 }
 
 class _PrincipalPageState extends State<PrincipalPage> {
-  String text = 'for vocal mode Press the button and start speaking';
+  String text = 'Pressez le micro pour le mode vocal';
   bool isListening = false;
   static List<Contact> contacts = [];
-  Map<String, Color> contactsColorMap = new Map();
-  TextEditingController searchController = new TextEditingController();
   static final noms = <String>[];
   @override
   void initState() {
@@ -80,7 +65,6 @@ class _PrincipalPageState extends State<PrincipalPage> {
     final comparison = <double>[];
     for (var i = 0; i < contacts.length; i++) {
       final numero = number;
-
       noms.add(contacts[i].displayName);
       comparison.add(numero.similarityTo(noms[i]));
     }
@@ -113,29 +97,39 @@ class _PrincipalPageState extends State<PrincipalPage> {
     return yo;
   }
 
-  static void scanText(String rawText) {
+  void scanText(String rawText) {
     final text = rawText.toLowerCase();
 
-    if (text.contains(Command.email)) {
-      final body = _getTextAfterCommand(text: text, command: Command.email);
-
-      openEmail(body: body);
-    } else if (text.contains(Command.browser1)) {
-      final url = _getTextAfterCommand(text: text, command: Command.browser1);
-
-      openLink(url: url);
-    } else if (text.contains(Command.browser2)) {
-      final url = _getTextAfterCommand(text: text, command: Command.browser2);
-
-      openLink(url: url);
-    } else if (text.contains(Command.achat)) {
-      final url = _getTextAfterCommand(text: text, command: Command.achat);
-      openOm(code: url);
+    if (text.contains(Command.achat)) {
+      final code = _getTextAfterCommand(text: text, command: Command.achat);
+      if (code.contains('francs')) {
+        achatcredit(code: code.replaceAll(RegExp("s"), ""));
+      } else if (code.contains('mega')) {
+        achatdata(code: code.replaceAll(RegExp("a"), ""));
+      }
     } else if (text.contains(Command.envoiargent)) {
       final url =
           _getTextAfterCommand(text: text, command: Command.envoiargent);
       final numero = _getTextAfterCommand(text: text, command: Command.numero);
-      sendcredit(code: url, numero: numero);
+      envoicredit(code: url, numero: numero);
+
+      /*  } else if (text.contains(Command.envoiargent)) {
+      final url = _getTextAfterCommand(text: text, command: Command.browser2);
+
+      achatdata(url: url);
+    } else if (text.contains(Command.achat)) {
+    } else if (text.contains(Command.browser2)) {
+      final url = _getTextAfterCommand(text: text, command: Command.browser2);
+
+      envoidata(url: url);
+    } else if (text.contains(Command.achat)) {
+      final url = _getTextAfterCommand(text: text, command: Command.achat);
+      achatcredit(code: url);
+    } else if (text.contains(Command.envoiargent)) {
+      final url =
+          _getTextAfterCommand(text: text, command: Command.envoiargent);
+      final numero = _getTextAfterCommand(text: text, command: Command.numero);
+      envoicredit(code: url, numero: numero);*/
     }
   }
 
@@ -153,43 +147,44 @@ class _PrincipalPageState extends State<PrincipalPage> {
     }
   }
 
-  static Future openLink({
-    @required String url,
-  }) async {
-    if (url.trim().isEmpty) {
-      await _launchUrl('https://google.com');
-    } else {
-      await _launchUrl('https://$url');
-    }
-  }
-
-  static Future openOm({
+  Future achatcredit({
     //  final String okay = new (widget.mdpOrange) ,
     @required String code,
   }) async {
     FlutterPhoneDirectCaller.callNumber(
-        "#150*2*1*1*${code.replaceAll(RegExp(r".[a-zA-z]"), "")}#");
+        "#150*2*1*1*${code.replaceAll(RegExp(r".[a-zA-z]"), "")}*${widget.mdpOrange}#");
   }
 
-  static Future sendcredit({
+  Future envoicredit({
+    @required String code,
+    @required String numero,
+  }) async {
+    _sendDataToSecondScreen2(context , numero , code);
+    // FlutterPhoneDirectCaller.callNumber(
+    //  "#150*2*1*2*${liste_contacts(numero).toString()}*${((code.replaceAll(RegExp(r"[a-zA-z]"), "")).replaceAll(RegExp(" "), "")).replaceAll(RegExp('à'), "")}*${widget.mdpOrange}#");
+  }
+
+  Future achatdata({
+    @required String code,
+  }) async {
+    FlutterPhoneDirectCaller.callNumber(
+        "#150*2*2*1*${code.replaceAll(RegExp(r".[a-zA-z]"), "")}*${widget.mdpOrange}#");
+  }
+
+  Future envoidata({
     @required String code,
     @required String numero,
   }) async {
     FlutterPhoneDirectCaller.callNumber(
-        "#150*2*1*2*${liste_contacts(numero).toString()}*${((code.replaceAll(RegExp(r"[a-zA-z]"), "")).replaceAll(RegExp(" "), "")).replaceAll(RegExp('à'), "")}*#");
+        "#150*2*2*2*${liste_contacts(numero).toString()}*${((code.replaceAll(RegExp(r"[a-zA-z]"), "")).replaceAll(RegExp(" "), "")).replaceAll(RegExp('à'), "")}*${widget.mdpOrange}#");
   }
 
-  static Future openEmail({
-    @required String body,
+  Future envoiargent({
+    @required String code,
+    @required String numero,
   }) async {
-    final url = 'mailto: ?body=${Uri.encodeFull(body)}';
-    await _launchUrl(url);
-  }
-
-  static Future _launchUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    }
+    FlutterPhoneDirectCaller.callNumber(
+        "#150*2*1*2*${liste_contacts(numero).toString()}*${((code.replaceAll(RegExp(r"[a-zA-z]"), "")).replaceAll(RegExp(" "), "")).replaceAll(RegExp('à'), "")}*${widget.mdpOrange}#");
   }
 
   Widget _soly() {
@@ -200,7 +195,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
       child: RaisedButton(
         color: Colors.transparent,
         //  backgroundColor: Colors.transparent,
-        onPressed: () {},
+        onPressed: _toggleRecording,
         child: Image.asset(
           'assets/soliGif.gif',
           height: 150,
@@ -210,40 +205,11 @@ class _PrincipalPageState extends State<PrincipalPage> {
     );
   }
 
-  Widget _rec() {
-    return Container(
-        margin: EdgeInsets.only(top: 40, bottom: 20),
-        child: Column(
-          children: <Widget>[
-            IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => VocalSignupPage()));
-              },
-              icon: Icon(Icons.mic),
-              iconSize: 80,
-              color: Colors.white,
-            ),
-
-            //Icon(Icons.security, size: 80, color: Colors.white),
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-              'Commande vocale',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-              ),
-            ),
-          ],
-        ));
-  }
-
   Widget _manu() {
     return Container(
         margin: EdgeInsets.only(top: 40, bottom: 20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             IconButton(
               onPressed:
@@ -255,13 +221,13 @@ class _PrincipalPageState extends State<PrincipalPage> {
                 _sendDataToSecondScreen(context);
               },
               icon: Icon(Icons.touch_app),
-              iconSize: 80,
+              iconSize: MediaQuery.of(context).size.width * 0.1,
               color: Colors.white,
             ),
 
             //Icon(Icons.fingerprint, size: 80, color: Colors.white),
             SizedBox(
-              height: 15,
+              height: MediaQuery.of(context).size.height * 0.0107,
             ),
             Text(
               'Mode manuel',
@@ -284,15 +250,15 @@ class _PrincipalPageState extends State<PrincipalPage> {
         children: <Widget>[
           _manu(),
           SizedBox(
-            width: 80,
+            width: MediaQuery.of(context).size.width * 0.15,
           ),
           Center(
             child: SubstringHighlight(
               text: text,
               terms: Command.all,
               textStyle: TextStyle(
-                fontSize: 32.0,
-                color: Colors.black,
+                fontSize: 18.0,
+                color: Colors.white,
                 fontWeight: FontWeight.w400,
               ),
               textStyleHighlight: TextStyle(
@@ -302,15 +268,8 @@ class _PrincipalPageState extends State<PrincipalPage> {
               ),
             ),
           ),
-          AvatarGlow(
-            animate: isListening,
-            endRadius: 75,
-            glowColor: Theme.of(context).primaryColor,
-            child: FloatingActionButton(
-              child: Icon(isListening ? Icons.mic : Icons.mic_none, size: 36),
-              onPressed: _toggleRecording,
-            ),
-          ),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+          _soly(),
         ],
       ),
     );
@@ -322,7 +281,7 @@ class _PrincipalPageState extends State<PrincipalPage> {
       text: TextSpan(
           text: 'S',
           style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.display1,
+            textStyle: Theme.of(context).textTheme.headline4,
             fontSize: 60,
             fontWeight: FontWeight.w700,
             color: Colors.orangeAccent,
@@ -344,33 +303,39 @@ class _PrincipalPageState extends State<PrincipalPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: Colors.grey.shade200,
-                    offset: Offset(2, 4),
-                    blurRadius: 5,
-                    spreadRadius: 2)
-              ],
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.amber, Colors.white])),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _title(),
-                SizedBox(
-                  height: 10.0,
-                ),
-                _lebos(),
-              ]),
-        ),
+        child: LayoutBuilder(builder: (ctx, constraints) {
+          return Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Colors.grey.shade200,
+                      offset: Offset(2, 4),
+                      blurRadius: 5,
+                      spreadRadius: 2)
+                ],
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xff070338), Color(0xff010001)])),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                  ),
+                  _title(),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.009,
+                  ),
+                  _lebos(),
+                ]),
+          );
+        }),
       ),
     );
   }
@@ -394,6 +359,15 @@ class _PrincipalPageState extends State<PrincipalPage> {
           builder: (context) => TransactionPage(
             mdpOrange: widget.mdpOrange,
             mdpMtn: widget.mdpMtn,
+          ),
+        ));
+  }
+  void _sendDataToSecondScreen2(BuildContext context , String number , String montant) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MyVocalHome( widget.mdpOrange ,  montant , liste_contacts(number).toString()
+
           ),
         ));
   }

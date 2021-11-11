@@ -33,12 +33,27 @@ class _MyHomeState extends State<MyHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.orange,
         title: Center(
-          child: Text('Send Money'),
+          child: Text('Transfert De Credit'),
         ),
       ),
       body: Container(
-        color: Colors.amber,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+                color: Colors.grey.shade200,
+                offset: Offset(2, 4),
+                blurRadius: 5,
+                spreadRadius: 2)
+          ],
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xff070338), Color(0xff010001)],
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -52,12 +67,14 @@ class _MyHomeState extends State<MyHome> {
                 ),
               ),
               child: new TextField(
+                keyboardType: TextInputType.phone,
                 controller: _textcontroller2,
                 textAlign: TextAlign.center,
                 decoration: new InputDecoration(
-                  hintText: "Entrez le numero s'il n'est pas dans vos contacts",
-                  border: InputBorder.none,
-                ),
+                    hintText: "Numero Du Destinataire",
+                    border: InputBorder.none,
+                    fillColor: Colors.white,
+                    filled: true),
               ),
             ),
             new Container(
@@ -70,15 +87,18 @@ class _MyHomeState extends State<MyHome> {
                 ),
               ),
               child: new TextField(
+                keyboardType: TextInputType.phone,
                 controller: _textcontroller1,
                 textAlign: TextAlign.center,
                 decoration: new InputDecoration(
-                  hintText: 'Entrez le Montant de la transaction',
-                  border: InputBorder.none,
-                ),
+                    hintText: ' Montant de la transaction',
+                    border: InputBorder.none,
+                    fillColor: Colors.white,
+                    filled: true),
               ),
             ),
-            ElevatedButton(
+            RaisedButton(
+              color: Colors.orange,
               onPressed: () {
                 _awaitReturnValueFromSecondScreen(context);
               },
@@ -87,8 +107,9 @@ class _MyHomeState extends State<MyHome> {
             SizedBox(
               height: MediaQuery.of(context).size.width * 0.03,
             ),
-            ElevatedButton(
-              onPressed: _textcontroller2.text.isEmpty
+            RaisedButton(
+              color: Colors.orange,
+              onPressed: (_textcontroller2.text == null)
                   ? () {
                       //print(widget.mdp);
                       FlutterPhoneDirectCaller.callNumber(

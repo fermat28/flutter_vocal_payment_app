@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login_signup/src/face_page.dart';
 import 'package:flutter_login_signup/src/local_auth_api.dart';
 import 'package:flutter_login_signup/src/principal.dart';
-import 'package:flutter_login_signup/src/signup.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -26,7 +24,7 @@ class _WelcomePageState extends State<WelcomePage> {
   String language;
   double volume = 0.5;
   double pitch = 0.8;
-  double rate = 1.0;
+  double rate = 0.6;
   TtsState ttsState = TtsState.stopped;
 
   get isPlaying => ttsState == TtsState.playing;
@@ -80,18 +78,13 @@ class _WelcomePageState extends State<WelcomePage> {
 
   //}
 
-  Future _stop() async {
-    var result = await flutterTts.stop();
-    if (result == 1) setState(() => ttsState = TtsState.stopped);
-  }
-
   @override
   void dispose() {
     super.dispose();
     flutterTts.stop();
   }
 
-  Widget _submitButton(TextEditingController controller, String title,
+  Widget _submitButton1(TextEditingController controller, String title,
       {bool isPassword = false}) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
@@ -116,49 +109,41 @@ class _WelcomePageState extends State<WelcomePage> {
                     Icons.lock,
                     color: Colors.white,
                   ),
-                  fillColor: Colors.green,
+                  fillColor: Colors.orange,
                   filled: true)),
         ],
       ),
     );
   }
 
-  Widget _signUpButton() {
+  Widget _submitButton2(TextEditingController controller, String title,
+      {bool isPassword = false}) {
     return Container(
-      child: Container(
-        width: (MediaQuery.of(context).size.width) * 0.45,
-        padding: EdgeInsets.symmetric(vertical: 13),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          color: Colors.white,
-        ),
-        child: Text(
-          '',
-          style: TextStyle(fontSize: 20, color: Color(0xfff7892b)),
-        ),
-      ),
-    );
-  }
-
-  Widget _rec() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 13),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          color: Colors.white,
-        ),
-        child: Text(
-          'Reconnaissance Vocale',
-          style: TextStyle(fontSize: 20, color: Color(0xfff7892b)),
-        ),
+      margin: EdgeInsets.symmetric(vertical: 10),
+      width: (MediaQuery.of(context).size.width) * 0.45,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          TextField(
+              controller: controller,
+              maxLength: 5,
+              keyboardType: TextInputType.phone,
+              textAlign: TextAlign.center,
+              obscureText: isPassword,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+              decoration: InputDecoration(
+                  hintText: title,
+                  border: InputBorder.none,
+                  prefixIcon: Icon(
+                    Icons.lock,
+                    color: Colors.white,
+                  ),
+                  fillColor: Colors.orange,
+                  filled: true)),
+        ],
       ),
     );
   }
@@ -170,24 +155,52 @@ class _WelcomePageState extends State<WelcomePage> {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.security),
-              iconSize: 80,
+              iconSize: MediaQuery.of(context).size.width * 0.1,
               color: Colors.white,
-              onPressed:
+              onPressed: (((_textcontroller1.text).isEmpty &&
+                          (_textcontroller2.text).isEmpty) ||
+                      (_textcontroller1.text.length < 4))
+                  ? () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: Center(child: Text('Erreur')),
+                                content: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const SizedBox(height: 16),
+                                    FittedBox(
+                                      child: Text(
+                                          'veuillez saisir un mot de passe correct',
+                                          style: TextStyle(color: Colors.red)),
+                                    ),
+                                  ],
+                                ),
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: Text('Ok'),
+                                  )
+                                ],
+                              ));
+                    }
                   /*() {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => PrincipalPage()));
               }*/
-                  () {
-                _sendDataToSecondScreen(context);
-              },
+                  : () {
+                      _sendDataToSecondScreen(context);
+                    },
             ),
 
             //Icon(Icons.security, size: 80, color: Colors.white),
             SizedBox(
-              height: 15,
+              height: MediaQuery.of(context).size.height * 0.017,
             ),
             Text(
-              'Mot de passe',
+              'M.D.P',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
@@ -217,7 +230,7 @@ class _WelcomePageState extends State<WelcomePage> {
           children: <Widget>[
             IconButton(
                 icon: Icon(Icons.face),
-                iconSize: 80,
+                iconSize: MediaQuery.of(context).size.width * 0.1,
                 color: Colors.white,
                 onPressed: () async {
                   final isAvailable = await LocalAuthApi.hasBiometrics();
@@ -225,13 +238,13 @@ class _WelcomePageState extends State<WelcomePage> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: Text('Availability'),
+                        title: Text('Non supporté'),
                         content: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             const SizedBox(height: 16),
-                            buildText('Reconaissance Faciale ', isAvailable),
+                            buildText('R.Faciale ', isAvailable),
                           ],
                         ),
                         actions: [
@@ -242,18 +255,15 @@ class _WelcomePageState extends State<WelcomePage> {
                         ],
                       ),
                     );
-                  } else {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => FacePage()));
-                  }
-                  ;
+                  } else
+                    _sendDataToSecondScreen(context);
                 }),
             //Icon(Icons.face, size: 80, color: Colors.white),
             SizedBox(
-              height: 15,
+              height: MediaQuery.of(context).size.height * 0.017,
             ),
             Text(
-              'Analyse faciale',
+              'A.faciale',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
@@ -270,7 +280,7 @@ class _WelcomePageState extends State<WelcomePage> {
           children: <Widget>[
             IconButton(
                 icon: Icon(Icons.fingerprint),
-                iconSize: 80,
+                iconSize: MediaQuery.of(context).size.width * 0.1,
                 color: Colors.white,
                 onPressed: () async {
                   final isAvailable = await LocalAuthApi.hasBiometrics();
@@ -278,13 +288,13 @@ class _WelcomePageState extends State<WelcomePage> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: Text('Availability'),
+                        title: Text('Non supporté'),
                         content: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             const SizedBox(height: 16),
-                            buildText('Reconaissance Faciale ', isAvailable),
+                            buildText('Empreinte digitale', isAvailable),
                           ],
                         ),
                         actions: [
@@ -295,19 +305,18 @@ class _WelcomePageState extends State<WelcomePage> {
                         ],
                       ),
                     );
-                  } else {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignUpPage()));
-                  }
+                  } else
+                    _sendDataToSecondScreen(context);
+
                   ;
                 }),
 
             //Icon(Icons.fingerprint, size: 80, color: Colors.white),
             SizedBox(
-              height: 15,
+              height: MediaQuery.of(context).size.height * 0.017,
             ),
             Text(
-              'Empreinte digitale',
+              'E.digitale',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,
@@ -319,7 +328,9 @@ class _WelcomePageState extends State<WelcomePage> {
 
   Widget _ORANGE() {
     return Container(
-      margin: EdgeInsets.only(top: 40, bottom: 20),
+      margin: EdgeInsets.only(
+        top: 40,
+      ),
       alignment: Alignment.center,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -333,10 +344,9 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
           ),
           SizedBox(
-            width: 50,
+            width: MediaQuery.of(context).size.height * 0.03,
           ),
-          _submitButton(_textcontroller1, "Mot de passe orange money",
-              isPassword: false),
+          _submitButton1(_textcontroller1, " O.M", isPassword: false),
         ],
       ),
     );
@@ -344,7 +354,9 @@ class _WelcomePageState extends State<WelcomePage> {
 
   Widget _MTN() {
     return Container(
-      margin: EdgeInsets.only(top: 40, bottom: 20),
+      margin: EdgeInsets.only(
+        top: 40,
+      ),
       alignment: Alignment.center,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -358,10 +370,9 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
           ),
           SizedBox(
-            width: 60,
+            width: MediaQuery.of(context).size.height * 0.06,
           ),
-          _submitButton(_textcontroller2, "Mot de passe mobile money",
-              isPassword: false),
+          _submitButton2(_textcontroller2, "MoMo", isPassword: false),
         ],
       ),
     );
@@ -401,34 +412,37 @@ class _WelcomePageState extends State<WelcomePage> {
             ),
           ),
           SizedBox(
-            width: 20,
+            width: MediaQuery.of(context).size.width * 0.025,
           ),
         ],
       ),
     );
   }
 
- 
   Widget _lebas() {
-    return Container(
-      margin: EdgeInsets.only(top: 40, bottom: 20),
-      alignment: Alignment.center,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          _label(),
-          SizedBox(
-            width: 80,
-          ),
-          _pass(),
-          SizedBox(
-            width: 80,
-          ),
-          _Rface(),
-        ],
-      ),
-    );
+    return LayoutBuilder(builder: (ctx, constraints) {
+      return Container(
+        width: (MediaQuery.of(context).size.width -
+            MediaQuery.of(context).padding.right),
+        margin: EdgeInsets.only(top: 40, bottom: 20),
+        alignment: Alignment.center,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            _label(),
+            SizedBox(
+              width: constraints.maxWidth * 0.15,
+            ),
+            _pass(),
+            SizedBox(
+              width: constraints.maxWidth * 0.15,
+            ),
+            _Rface(),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _title() {
@@ -476,30 +490,34 @@ class _WelcomePageState extends State<WelcomePage> {
                   end: Alignment.bottomCenter,
                   colors: [Color(0xff070338), Color(0xff010001)])),
           child: SingleChildScrollView(
-            child: Container(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 40,
-                    ),
-                    _title(),
-                    SizedBox(
-                      height: 35,
-                    ),
-                    _ORANGE(),
-                    _MTN(),
-                    SizedBox(
-                      height: 60,
-                    ),
-                    _divider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    _lebas(),
-                  ]),
-            ),
+            child: LayoutBuilder(builder: (ctx, constraints) {
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                      ),
+                      _title(),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.0015,
+                      ),
+                      Column(
+                        children: [
+                          _ORANGE(),
+                          _MTN(),
+                        ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.013,
+                      ),
+                      _divider(),
+                      _lebas(),
+                    ]),
+              );
+            }),
           ),
         ),
       ),
