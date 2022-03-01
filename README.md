@@ -27,7 +27,7 @@ List the ready features here:
 
 
 ## Screenshots
-![Example screenshot](./img/screenshot.png)
+![Example screenshot](./assets/app2.jpeg)
 <!-- If you have screenshots you'd like to share, include them here. -->
 
 
